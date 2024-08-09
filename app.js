@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const homey_1 = __importDefault(require("homey"));
 const mqtt_1 = require("mqtt");
-class ESPresenceApp extends homey_1.default.App {
+class ESPresenseApp extends homey_1.default.App {
     constructor() {
         super(...arguments);
         this.rooms = [];
@@ -39,4 +39,4 @@ class ESPresenceApp extends homey_1.default.App {
         });
     }
 }
-module.exports = ESPresenceApp;
+module.exports = ESPresenseApp;

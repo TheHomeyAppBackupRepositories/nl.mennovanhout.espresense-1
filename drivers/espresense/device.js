@@ -49,8 +49,9 @@ class MyDevice extends homey_1.default.Device {
             }
             const json = JSON.parse(message.toString());
             await this.setCapabilityValue(`espresense_distance_capability.${deviceName}`, json.distance);
-            this.log(deviceName);
-            this.log(json.distance);
+            await this.setCapabilityOptions(`espresense_distance_capability.${deviceName}`, { title: { en: `${deviceName}` } });
+            // this.log(deviceName);
+            // this.log(json.distance);
             // Trigger flow cards
             await this.whenDeviceIsCloserThanXMetersCard?.trigger(this, {
                 'device-distance': json.distance,
@@ -101,7 +102,15 @@ class MyDevice extends homey_1.default.Device {
         this.log('MyDevice settings where changed');
     }
     async onDeleted() {
-        this.client.off('message', this.messageReceived.bind(this));
+        this.client.off('message', this.messageReceived);
+        this.client.unsubscribe(`espresense/rooms/${this.getData().id}/#`);
+        this.client.unsubscribe('espresense/devices/#');
+    }
+    onUninit() {
+        this.client.off('message', this.messageReceived);
+        this.client.unsubscribe(`espresense/rooms/${this.getData().id}/#`);
+        this.client.unsubscribe('espresense/devices/#');
+        return super.onUninit();
     }
 }
 module.exports = MyDevice;
